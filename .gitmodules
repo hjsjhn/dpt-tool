@@ -1,0 +1,3 @@
+[submodule "dpt-tool/utils/pydig4dpt"]
+	path = dpt-tool/utils/pydig4dpt
+	url = git@github.com:hjsjhn/pydig4dpt.git
