@@ -1,2 +1,2 @@
 from .pydig4dpt import pydig
-from .constant import opt_dict
+from .constant import edns_opt_dict

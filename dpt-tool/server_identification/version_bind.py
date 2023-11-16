@@ -3,7 +3,7 @@ import dns.message
 import dns.query
 import sys
 sys.path.append('..')
-from utils import pydig, opt_dict
+from utils import pydig, edns_opt_dict
 
 def get_version_bind(server):
     response = pydig(["@" + server, "version.bind", "TXT", "CH"])

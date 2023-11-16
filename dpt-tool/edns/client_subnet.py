@@ -4,7 +4,7 @@ from clientsubnetoption import ClientSubnetOption
 import sys
 sys.path.append('..')
 import utils.network_interfaces as network_interfaces
-from utils import pydig, opt_dict
+from utils import pydig, edns_opt_dict
 
 def check_ecs(server: str, domain: str) -> bool:
     """
@@ -23,9 +23,9 @@ def check_ecs(server: str, domain: str) -> bool:
     """
     client_subnet = network_interfaces.get_network_interfaces()[0].netmask
 
-    response = pydig(["@" + server, "+subnet=" + client_subnet + "/24"], VERBOSE=3)
+    response = pydig(["@" + server, "+subnet=" + client_subnet + "/24"])
 
-    return opt_dict["ECS"] in response.section['ADDITIONAL'].optrr.options
+    return edns_opt_dict["ECS"] in response.section['ADDITIONAL'].optrr.options
 
     # cso = clientsubnetoption.ClientSubnetOption(client_subnet)
     # message = dns.message.make_query(domain, 'A')

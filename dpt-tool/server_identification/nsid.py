@@ -12,13 +12,13 @@ import dns.message
 import dns.query
 import sys
 sys.path.append('..')
-from utils import pydig, opt_dict
+from utils import pydig, edns_opt_dict
 
 
 def check_nsid_support(server):
     response = pydig(["@" + server, "+nsid"])
-    # print(opt_dict["NSID"] in response.section['ADDITIONAL'].optrr.options)
-    return opt_dict["NSID"] in response.section['ADDITIONAL'].optrr.options
+    # print(edns_opt_dict["NSID"] in response.section['ADDITIONAL'].optrr.options)
+    return edns_opt_dict["NSID"] in response.section['ADDITIONAL'].optrr.options
 
 
 # print(check_nsid_support("8.8.8.8"))
