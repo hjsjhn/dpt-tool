@@ -39,10 +39,13 @@ def check_doh_support(doh_url, domain):
 def get_doh_info(server, query_domain):
     """
     Get DNS resolver's DoH url information through server ip. (only for url with suffix '/dns-query')
+
+    NOTE: For some DNS resolver, the DoH url may not be the same as the server ip.
     """
     ip, port = server, 443
 
     cert, domains = get_certificate_and_domain(ip, port)
+    # print(domains)
     results = []
     for domain in domains:
         if "*." in domain:
@@ -54,4 +57,4 @@ def get_doh_info(server, query_domain):
     results = list(set(results))
     return results
 
-# Example: print(get_doh_info("8.8.8.8", "example.com"))
+print(get_doh_info("77.88.8.8", "www.baidu.com"))

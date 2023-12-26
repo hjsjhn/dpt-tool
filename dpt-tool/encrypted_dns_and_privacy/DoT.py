@@ -1,7 +1,7 @@
 import dns.resolver
 import socket
 
-# TODO: not accurate now (show `False` for '1.1.1.1' but actually it supports DoT)
+# NOTE: not accurate now (show `False` for '1.1.1.1' but actually it supports DoT)
 def check_tls_support(server_ip, domain):
     port = 853
     try:
