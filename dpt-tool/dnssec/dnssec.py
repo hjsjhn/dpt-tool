@@ -1,7 +1,7 @@
 import sys
 sys.path.append('..')
 import utils.network_interfaces as network_interfaces
-from utils import pydig, edns_opt_dict
+from utils import pydig, edns_opt_dict, dnskey_algo_dict
 
 def check_do_bit(server):
     """
@@ -36,4 +36,42 @@ def check_response_validation(server):
 
     return response.ad == 1
 
+def check_dnskey_alg(server, alg):
+    """
+    Args:
+        `server`: the DNS server to query
+        `alg`: the algorithm to check
+
+    Returns:
+        `True` if the server supports the algorithm, `False` otherwise
+
+    Examples:
+        `check_dnskey_alg("1.1.1.1", 8)`
+    """
+    supported_algs = [5, 8, 10, 13, 14]
+    if isinstance(alg, str):
+        if alg.isdigit():
+            alg = int(alg)
+        else:
+            alg = dnskey_algo_dict[alg]
+    elif isinstance(alg, int):
+        pass
+    else:
+        raise TypeError("alg must be int or str")
+    if alg not in supported_algs:
+        raise ValueError("alg must be one of 5, 8, 10, 13, 14")
+    
+    # NOTE: change the domain name and subdomain rules here
+    sld = "checkmydns.club"
+    subdomain = f"dns-alg-{alg}"
+    bad_subdomain = f"dns-alg-{alg}-f"
+    
+    response = pydig(["@" + server, "+dnssec", '.'.join([subdomain, sld])])
+    bad_response = pydig(["@" + server, "+dnssec", '.'.join([bad_subdomain, sld])])
+    if "do" in response.section['ADDITIONAL'].optrr.flags and "do" in bad_response.section['ADDITIONAL'].optrr.flags:
+        if 0 in response.section['ADDITIONAL'].optrr.ercode and 0 not in bad_response.section['ADDITIONAL'].optrr.ercode:
+            return True
+    return False
+
+print(check_dnskey_alg("1.1.1.1", 8))
 # print(check_response_validation("8.8.8.8"))
