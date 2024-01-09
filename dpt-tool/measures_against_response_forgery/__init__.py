@@ -1,1 +1,1 @@
-from bit_0x20 import check_0x20_encoding
+from .bit_0x20 import check_0x20_encoding

@@ -6,7 +6,7 @@ from utils import pydig, edns_opt_dict
 from time import sleep
 import requests
 
-def check_0x20_encoding(server, sld, auth_server):
+def check_0x20_encoding(server, sld='checkmydns.club', auth_server='108.61.171.88:88'):
     """
     Args:
         `server`: the DNS server to query

@@ -1,1 +1,1 @@
-from dnssec import check_do_bit, check_response_validation
+from .dnssec import check_do_bit, check_response_validation, get_dnskey_alg

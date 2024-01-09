@@ -1,7 +1,7 @@
 import dns.message
 import dns.query
 
-def check_dns_opt_record(server: str, domain: str) -> bool:
+def check_dns_opt_record(server: str, domain: str = "checkmydns.club") -> bool:
     """
     Make a DNS query to the specified DNS server and check if the response
     contains OPT records
@@ -21,7 +21,7 @@ def check_dns_opt_record(server: str, domain: str) -> bool:
     query.flags |= dns.flags.DO
 
     # Send the query message to the specified DNS server
-    response = dns.query.tcp(query, server)
+    response = dns.query.udp(query, server)
 
     # Check if the response contains OPT records
     return response.options != []

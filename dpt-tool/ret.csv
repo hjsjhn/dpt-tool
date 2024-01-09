@@ -1,0 +1,5 @@
+Name,Address,client_subnet,nsid,dot,0x20
+Cloudflare,1.1.1.1,False,True,False,False
+Cloudflare,1.0.0.1,False,True,False,False
+Google Public DNS,8.8.8.8,True,True,False,False
+Quad9,9.9.9.9,False,True,False,False

@@ -36,7 +36,7 @@ def check_doh_support(doh_url, domain):
         print("Response Error with code: " + response.status_code)
         return False
 
-def get_doh_info(server, query_domain):
+def get_doh_info(server, query_domain = 'checkmydns.club'):
     """
     Get DNS resolver's DoH url information through server ip. (only for url with suffix '/dns-query')
 
@@ -57,4 +57,4 @@ def get_doh_info(server, query_domain):
     results = list(set(results))
     return results
 
-print(get_doh_info("77.88.8.8", "www.baidu.com"))
+# print(get_doh_info("77.88.8.8", "www.baidu.com"))

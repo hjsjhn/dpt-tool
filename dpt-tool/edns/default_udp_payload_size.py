@@ -13,7 +13,7 @@ import dns.query
         to see default UDP payload size to authoritative.
 """
 
-def check_dns_udp_payload_size(stub_server: str, domain: str) -> int:
+def check_dns_udp_payload_size(stub_server: str, domain: str = 'checkmydns.club') -> int:
     """
     Make a DNS query to the specified DNS server and check the UDP payload size
 

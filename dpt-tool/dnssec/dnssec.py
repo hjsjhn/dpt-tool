@@ -73,5 +73,23 @@ def check_dnskey_alg(server, alg):
             return True
     return False
 
-print(check_dnskey_alg("1.1.1.1", 8))
+def get_dnskey_alg(server):
+    """
+    Args:
+        `server`: the DNS server to query
+
+    Returns:
+        a list of supported algorithms
+
+    Examples:
+        `get_dnskey_alg("8.8.8.8")`
+    """
+    supported_algs = [5, 8, 10, 13, 14]
+    res = []
+    for alg in supported_algs:
+        if check_dnskey_alg(server, alg):
+            res.append(alg)
+    return res
+
+# print(check_dnskey_alg("1.1.1.1", 8))
 # print(check_response_validation("8.8.8.8"))

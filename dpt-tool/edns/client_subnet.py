@@ -6,7 +6,7 @@ sys.path.append('..')
 import utils.network_interfaces as network_interfaces
 from utils import pydig, edns_opt_dict
 
-def check_ecs(server: str, domain: str) -> bool:
+def check_ecs(server: str, domain: str = 'checkmydns.club') -> bool:
     """
     Check whether the specified DNS server supports EDNS Client Subnet (ECS)
     extension by sending a DNS query with ECS option to the server and checking
@@ -37,4 +37,4 @@ def check_ecs(server: str, domain: str) -> bool:
     # return False
 
 # Example: print(check_ecs('8.8.8.8', 'checkmydns.club'))
-print(check_ecs('8.8.8.8', 'checkmydns.club'))
+# print(check_ecs('8.8.8.8', 'checkmydns.club'))
