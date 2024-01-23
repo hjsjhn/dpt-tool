@@ -75,6 +75,7 @@ funcs = [choice_to_func[choice] for choice in args.choice]
 for name in tqdm(args.server.keys(), desc="Processing DNS servers"):
     for ip in tqdm(args.server[name], desc="    Processing ips", leave=False):
         df.loc[len(df)] = [name, ip, *[func(ip) for func in funcs]]
+    df.to_csv(args.output, index=False)
 
 # print(df)
 df.to_csv(args.output, index=False)
