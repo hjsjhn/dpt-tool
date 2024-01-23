@@ -17,24 +17,26 @@ def get_certificate_and_domain(ip, port):
             return cert, domains
 
 def check_doh_support(doh_url, domain):
-    headers = { 'accept': 'application/dns-message' }
+    headers = [ 'application/dns-json', 'application/dns-message' ]
     query = dns.message.make_query(domain, dns.rdatatype.A)
     wire_data = query.to_wire()
     base64_encoded_data = base64.b64encode(wire_data).decode('utf-8')
-    params = { 'dns': base64_encoded_data[:-2] }
+    params = { 'dns': base64_encoded_data[:-2], 'name': domain }
 
-    try:
-        response = requests.get(doh_url, headers=headers, params=params)
-        response.raise_for_status()
-    except requests.exceptions.RequestException as e:
-        print("Error making request:", e)
-        return False
+    for key, value in params.items():
+        for header in headers:
+            try:
+                response = requests.get(doh_url, headers={'accept': header}, params={key: value})
+                response.raise_for_status()
+            except requests.exceptions.RequestException as e:
+                # print("Error making request:", e)
+                continue
 
-    if response.status_code == 200:
-        return True
-    else:
-        print("Response Error with code: " + response.status_code)
-        return False
+            if response.status_code == 200:
+                return True
+            else:
+                # print("Response Error with code: " + response.status_code)
+                pass
 
 def get_doh_info(server, query_domain = 'checkmydns.club'):
     """

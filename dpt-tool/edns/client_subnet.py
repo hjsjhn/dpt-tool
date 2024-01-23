@@ -1,6 +1,4 @@
 import dns
-import clientsubnetoption
-from clientsubnetoption import ClientSubnetOption
 import sys
 sys.path.append('..')
 import utils.network_interfaces as network_interfaces

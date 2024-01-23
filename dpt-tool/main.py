@@ -51,7 +51,6 @@ if len(args.choice) == 1 and ',' in args.choice[0]:
     args.choice = args.choice[0].split(',')
 if args.output == None:
     args.output = "./result.csv"
-args.server = args.server[0]
 # print(args.choice)
 # print(args.server)
 
@@ -66,6 +65,8 @@ else:
 
 if args.server is None:
     args.server = default_server
+else:
+    args.server = args.server[0]
 
 df = pd.DataFrame(columns=["Name", "Address"] + args.choice)
 # apply the function to each server and each choice, output the result to the dataframe
