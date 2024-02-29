@@ -77,4 +77,4 @@ choice_to_name = {
     "0x20": "0x20 encoding",
     "ede": "EDNS Extended Errors (EDE)"
 }
-default_choice = choice_to_func.keys()
+default_choice = list(choice_to_func.keys())

@@ -22,7 +22,7 @@ def check_0x20_encoding(server, sld='checkmydns.club', auth_server='108.61.171.8
     uuid_str = str(uuid.uuid4())
     response = pydig(["@" + server, f"{uuid_str}.{sld}"])
     sleep(1)
-    max_try = 5
+    max_try = 3
     while max_try > 0:
         try:
             url = f"http://{auth_server}/data/{uuid_str}"
@@ -34,10 +34,10 @@ def check_0x20_encoding(server, sld='checkmydns.club', auth_server='108.61.171.8
                     return True if content["0x20"] else False
                 break
             else:
-                sleep(0.05)
+                sleep(1)
                 max_try -= 1
         except:
-            sleep(0.05)
+            sleep(1)
             max_try -= 1
     return False
 

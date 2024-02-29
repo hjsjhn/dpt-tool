@@ -1,4 +1,5 @@
 import argparse
+import multiprocessing
 import pandas as pd
 import json
 from tqdm import tqdm
@@ -72,9 +73,25 @@ df = pd.DataFrame(columns=["Name", "Address"] + args.choice)
 # apply the function to each server and each choice, output the result to the dataframe
 funcs = [choice_to_func[choice] for choice in args.choice]
 
+def start_test(name, ip):
+    return [name, ip, *[func(ip) for func in funcs]]
+
+
 for name in tqdm(args.server.keys(), desc="Processing DNS servers"):
-    for ip in tqdm(args.server[name], desc="    Processing ips", leave=False):
-        df.loc[len(df)] = [name, ip, *[func(ip) for func in funcs]]
+    for ip in tqdm(args.server[name], desc=f"    Processing {name}'s ips", leave=False):
+        ret = None
+        with multiprocessing.Pool() as pool:
+            result = pool.apply_async(start_test, (name,ip,))
+            try:
+                ret = result.get(timeout=180)
+            # except multiprocessing.TimeoutError:
+            except Exception as e:
+                print(e)
+                pass
+        # df.loc[len(df)] = [name, ip, *[func(ip) for func in funcs]]
+        if ret:
+            df.loc[len(df)] = ret
+    df.to_csv(args.output, index=False)
 
 # print(df)
 df.to_csv(args.output, index=False)
