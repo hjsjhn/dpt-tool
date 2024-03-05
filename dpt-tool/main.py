@@ -3,6 +3,7 @@ import multiprocessing
 import pandas as pd
 import json
 from tqdm import tqdm
+from time import sleep
 from constant import default_choice, default_server, choice_to_func, choice_to_name
 
 def str_to_dict_list(input_str):
@@ -79,6 +80,7 @@ def start_test(name, ip):
 
 for name in tqdm(args.server.keys(), desc="Processing DNS servers"):
     for ip in tqdm(args.server[name], desc=f"    Processing {name}'s ips", leave=False):
+        sleep(2)
         ret = None
         with multiprocessing.Pool() as pool:
             result = pool.apply_async(start_test, (name,ip,))
