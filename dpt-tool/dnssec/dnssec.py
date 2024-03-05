@@ -1,5 +1,6 @@
 import sys
 sys.path.append('..')
+from time import sleep
 import utils.network_interfaces as network_interfaces
 from utils import pydig, edns_opt_dict, dnskey_algo_dict
 
@@ -66,11 +67,14 @@ def check_dnskey_alg(server, alg):
     subdomain = f"dnskey-alg-{alg}"
     bad_subdomain = f"dnskey-alg-{alg}-f"
 
-    response = pydig(["@" + server, "+dnssec", '.'.join([subdomain, sld])])
-    bad_response = pydig(["@" + server, "+dnssec", '.'.join([bad_subdomain, sld])])
-    if "do" in response.section['ADDITIONAL'].optrr.flags and "do" in bad_response.section['ADDITIONAL'].optrr.flags:
-        if 0 in response.section['ADDITIONAL'].optrr.ercode and 0 not in bad_response.section['ADDITIONAL'].optrr.ercode:
-            return True
+    try:
+        response = pydig(["@" + server, "+dnssec", '.'.join([subdomain, sld])])
+        bad_response = pydig(["@" + server, "+dnssec", '.'.join([bad_subdomain, sld])])
+        if "do" in response.section['ADDITIONAL'].optrr.flags and "do" in bad_response.section['ADDITIONAL'].optrr.flags:
+            if 0 in response.section['ADDITIONAL'].optrr.ercode and 0 not in bad_response.section['ADDITIONAL'].optrr.ercode:
+                return True
+    except:
+        return False
     return False
 
 def get_dnskey_alg(server):
@@ -89,6 +93,7 @@ def get_dnskey_alg(server):
     for alg in supported_algs:
         if check_dnskey_alg(server, alg):
             res.append(alg)
+        sleep(0.5)
     return res
 
 # print(check_dnskey_alg("1.1.1.1", 8))
