@@ -26,7 +26,7 @@ def check_doh_support(doh_url, domain):
     for key, value in params.items():
         for header in headers:
             try:
-                response = requests.get(doh_url, headers={'accept': header}, params={key: value})
+                response = requests.get(doh_url, headers={'accept': header}, params={key: value}, timeout=(1,2))
                 response.raise_for_status()
             except requests.exceptions.RequestException as e:
                 # print("Error making request:", e)
@@ -47,12 +47,17 @@ def get_doh_info(server, query_domain = 'checkmydns.club'):
     ip, port = server, 443
 
     cert, domains = get_certificate_and_domain(ip, port)
-    # print(domains)
     results = []
     for domain in domains:
         if "*." in domain:
             domains.append(domain[2:])
             domain = "dns." + domain[2:]
+    domains = list(set(domains))
+    # print(domains)
+    domains = [domain for domain in domains if "dot" not in domain]
+    for domain in domains:
+        if "*." in domain:
+            continue
         domain = "https://" + domain
         if check_doh_support(domain + '/dns-query', query_domain):
             results.append(domain)

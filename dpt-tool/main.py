@@ -84,12 +84,15 @@ for name in tqdm(args.server.keys(), desc="Processing DNS servers"):
         ret = None
         with multiprocessing.Pool() as pool:
             result = pool.apply_async(start_test, (name,ip,))
-            try:
-                ret = result.get(timeout=180)
-            # except multiprocessing.TimeoutError:
-            except Exception as e:
-                print(e)
-                pass
+            ret = None
+            for cnt in range(3):
+                try:
+                    ret = result.get(timeout=180)
+                    break
+                # except multiprocessing.TimeoutError:
+                except Exception as e:
+                    print(e)
+                    sleep(1)
         # df.loc[len(df)] = [name, ip, *[func(ip) for func in funcs]]
         if ret:
             df.loc[len(df)] = ret

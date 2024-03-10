@@ -27,7 +27,7 @@ def check_0x20_encoding(server, sld='checkmydns.club', auth_server='108.61.171.8
         sleep(1)
         try:
             url = f"http://{auth_server}/data/{uuid_str}"
-            response = requests.get(url)
+            response = requests.get(url, timeout=(1,2))
             if response.status_code == 200:
                 # get the json content from response
                 content = response.json()

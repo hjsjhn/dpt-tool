@@ -20,7 +20,13 @@ def check_do_bit(server):
     """
     response = pydig(["@" + server, "+dnssec"])
 
-    return "do" in response.section['ADDITIONAL'].optrr.flags
+    try:
+        if "do" in response.section['ADDITIONAL'].optrr.flags:
+            return True
+        else:
+            return False
+    except:
+        return False
 
 def check_response_validation(server):
     """
@@ -34,8 +40,10 @@ def check_response_validation(server):
         `check_response_validation("8.8.8.8")`
     """
     response = pydig(["@" + server, "+dnssec"])
+    broken_domain = "www.dnssec-failed.org"
+    bad_response = pydig(["@" + server, "+dnssec", broken_domain])
 
-    return response.ad == 1
+    return response.ad == 1 and bad_response.ad == 0
 
 def check_dnskey_alg(server, alg):
     """

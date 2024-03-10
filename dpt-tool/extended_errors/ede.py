@@ -1,5 +1,6 @@
 import sys
 sys.path.append('..')
+import numpy as np
 import utils.network_interfaces as network_interfaces
 from utils import pydig, edns_opt_dict
 
@@ -79,8 +80,10 @@ def get_ede_support_list(server: str) -> list:
         `server`: the DNS server to query
     """
     res = []
-    for subdomain in subdomain_list:
-        threshold = 5
+    # take 10 subdomains randomly to query
+    new_subdomain_list = np.random.choice(subdomain_list, 10, replace=False)
+    for subdomain in new_subdomain_list:
+        threshold = 3
         while threshold > 0:
             try:
                 response = pydig(["@" + server, "+dnssec", f"{subdomain}.{domain}"])
@@ -89,9 +92,12 @@ def get_ede_support_list(server: str) -> list:
                 threshold -= 1 
         if threshold == 0:
             continue
-        options = response.section['ADDITIONAL'].optrr.options
-        if edns_opt_dict["EDE"] in options:
-            res.append(options[edns_opt_dict["EDE"]].data["info_code"])
+        try:
+            options = response.section['ADDITIONAL'].optrr.options
+            if edns_opt_dict["EDE"] in options:
+                res.append(options[edns_opt_dict["EDE"]].data["info_code"])
+        except:
+            pass
     res = list(set(res))
     return res
 
