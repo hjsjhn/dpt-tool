@@ -25,6 +25,10 @@ from extended_errors import *
 from measures_against_response_forgery import *
 from server_identification import *
 
+RETRIES = 3        # how many times to try for a single test
+TOTAL_RETRIES = 3  # how many times to try for the entire test queue
+TIMEOUT = 0.5      # timeout for a single test (second)
+
 # %%
 default_server = {
     "Cloudflare": ["1.1.1.1", "1.0.0.1"],

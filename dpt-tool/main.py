@@ -4,7 +4,7 @@ import pandas as pd
 import json
 from tqdm import tqdm
 from time import sleep
-from constant import default_choice, default_server, choice_to_func, choice_to_name
+from constant import default_choice, default_server, choice_to_func, choice_to_name, RETRIES, TOTAL_RETRIES, TIMEOUT
 
 def str_to_dict_list(input_str):
     try:
@@ -74,29 +74,69 @@ df = pd.DataFrame(columns=["Name", "Address"] + args.choice)
 # apply the function to each server and each choice, output the result to the dataframe
 funcs = [choice_to_func[choice] for choice in args.choice]
 
+def test_with_retry(func, ip):
+    for i in range(RETRIES):
+        try:
+            ret = func(ip)
+            return ret
+        except:
+            sleep(TIMEOUT)
+            pass
+    return "FAILED"
+
 def start_test(name, ip):
-    return [name, ip, *[func(ip) for func in funcs]]
+    ret = [name, ip]
+    for func in funcs:
+        ret.append(test_with_retry(func, ip))
+        sleep(TIMEOUT)
+    return ret
+    # return [name, ip, *[test_with_retry(func, ip) for func in funcs]]
 
 
-for name in tqdm(args.server.keys(), desc="Processing DNS servers"):
-    for ip in tqdm(args.server[name], desc=f"    Processing {name}'s ips", leave=False):
-        sleep(2)
-        ret = None
-        with multiprocessing.Pool() as pool:
-            result = pool.apply_async(start_test, (name,ip,))
+queue = args.server
+for i in range(TOTAL_RETRIES):
+    if not queue:
+        break
+    nqueue = {}
+    for name in tqdm(queue.keys(), desc=f"Processing DNS servers(round {i+1})"):
+        for ip in tqdm(queue[name], desc=f"    Processing {name}'s ips", leave=False):
+            sleep(1)
             ret = None
-            for cnt in range(3):
+            with multiprocessing.Pool() as pool:
+                result = pool.apply_async(start_test, (name,ip,))
+                ret = None
                 try:
                     ret = result.get(timeout=180)
-                    break
-                # except multiprocessing.TimeoutError:
-                except Exception as e:
-                    print(e)
-                    sleep(1)
-        # df.loc[len(df)] = [name, ip, *[func(ip) for func in funcs]]
-        if ret:
-            df.loc[len(df)] = ret
-    df.to_csv(args.output, index=False)
+                except:
+                    if name in nqueue:
+                        nqueue[name].append(ip)
+                    else:
+                        nqueue[name] = [ip]
+                """
+                for cnt in range(3):
+                    try:
+                        ret = result.get(timeout=180)
+                        break
+                    # except multiprocessing.TimeoutError:
+                    except Exception as e:
+                        print(e)
+                        sleep(1)
+                """
+            # df.loc[len(df)] = [name, ip, *[func(ip) for func in funcs]]
+            if ret:
+                df.loc[len(df)] = ret
+        df.to_csv(args.output, index=False)
+    queue = nqueue
+    if queue:
+        sleep(5)
+
+if queue:
+    print("The DNS resolvers below failed the test:")
+    for name in queue:
+        print(f"{name}: ", end='')
+        for ip in queue[name]:
+            print(ip, end=' ')
+        print()
 
 # print(df)
 df.to_csv(args.output, index=False)
