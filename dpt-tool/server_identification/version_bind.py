@@ -6,7 +6,7 @@ sys.path.append('..')
 from utils import pydig, edns_opt_dict
 
 def get_version_bind(server):
-    response = pydig(["@" + server, "version.bind", "TXT", "CH"], VERBOSE=2)
+    response = pydig(["@" + server, "version.bind", "TXT", "CH"])
     if response.rcode != 0:
         return "RCODE=" + str(response.rcode_name)
     # print(str(response.section['ANSWER'].record[0].rrname))
