@@ -10,9 +10,12 @@ def get_id_server(server):
     if response.rcode != 0:
         return "RCODE=" + str(response.rcode_name)
     # print(response.section['ANSWER'].rrname)
-    if 'ANSWER' not in response.section or \
-        response.section['ANSWER'].rrname != "id.server.":
-        return "NO id.server info"
-    return response.section['ANSWER'].rdata[1:-1]
+    try:
+        for record in response.section['ANSWER'].record:
+            if record.rrname == "id.server.":
+                return record.rdata[1:-1]
+    except:
+        pass
+    return "NO id.server info"
 
 # print(get_id_server("1.1.1.1"))

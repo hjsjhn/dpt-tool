@@ -1,5 +1,6 @@
 import dns.message
 import dns.query
+from time import sleep
 
 """
     To get default payload size to authoritative,
@@ -26,15 +27,27 @@ def check_dns_udp_payload_size(stub_server: str, domain: str = 'checkmydns.club'
     """
     # Create a DNS query message for stub server
     query_stub = dns.message.make_query(domain, dns.rdatatype.ANY)
-    query_stub.use_edns(payload=4096)
 
     # Send the query message to the stub server
-    response_stub = dns.query.udp(query_stub, stub_server)
+    response_stub = []
+
+    MAX_TRIES = 3
+    for i in range(MAX_TRIES):
+        query_stub.use_edns(payload=4096)
+        response_stub.append(int(dns.query.udp(query_stub, stub_server).payload))
+
+        query_stub.use_edns()
+        response_stub.append(int(dns.query.udp(query_stub, stub_server).payload))
+
+        sleep(1)
+
+    response_stub = list(set(response_stub))
 
     # Get the UDP payload size from the response for stub server
-    udp_payload_size_stub = response_stub.payload
+    # udp_payload_size_stub = response_stub.payload
 
-    return int(udp_payload_size_stub)
+    # return udp_payload_size_stub
+    return response_stub
 
 
 # Example: print(check_dns_udp_payload_size('1.1.1.1', 'checkmydns.club'))

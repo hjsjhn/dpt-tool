@@ -77,9 +77,10 @@ def check_dnskey_alg(server, alg):
 
     try:
         response = pydig(["@" + server, "+dnssec", '.'.join([subdomain, sld])])
+        # print(response.section["ADDITIONAL"].optrr.flags)
         bad_response = pydig(["@" + server, "+dnssec", '.'.join([bad_subdomain, sld])])
-        # print(response.section["ADDITIONAL"].optrr)
-        if "do" in response.section['ADDITIONAL'].optrr.flags and "do" in bad_response.section['ADDITIONAL'].optrr.flags:
+        # print(response.section["ADDITIONAL"].optrr.flags, bad_response.section["ADDITIONAL"].optrr.flags)
+        if "do" in response.section['ADDITIONAL'].optrr.flags:# and "do" in bad_response.section['ADDITIONAL'].optrr.flags:
             if 0 in response.section['ADDITIONAL'].optrr.ercode and 0 not in bad_response.section['ADDITIONAL'].optrr.ercode:
                 return True
     except:
