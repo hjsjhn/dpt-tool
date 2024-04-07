@@ -41,9 +41,12 @@ def check_response_validation(server):
     """
     response = pydig(["@" + server, "+dnssec"])
     broken_domain = "www.dnssec-failed.org"
-    bad_response = pydig(["@" + server, "+dnssec", broken_domain])
+    try:
+        bad_response = pydig(["@" + server, "+dnssec", broken_domain])
+    except:
+        bad_response = None
 
-    return response.ad == 1 and bad_response.ad == 0
+    return response.ad == 1 and (bad_response == None or bad_response.ad == 0)
 
 def check_dnskey_alg(server, alg):
     """

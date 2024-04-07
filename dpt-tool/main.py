@@ -78,6 +78,8 @@ def test_with_retry(func, ip):
     for i in range(RETRIES):
         try:
             ret = func(ip)
+            if isinstance(ret, bool):
+                ret = "Yes" if ret else "No"
             return ret
         except:
             sleep(TIMEOUT)
