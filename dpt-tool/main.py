@@ -16,6 +16,7 @@ def str_to_dict_list(input_str):
                 raise argparse.ArgumentTypeError("Invalid input. Values must be lists.")
         return result
     except json.JSONDecodeError as e:
+        print(input_str)
         raise argparse.ArgumentTypeError("Invalid input. Must be a valid JSON string.") from e
 
 # %%
@@ -89,7 +90,9 @@ def test_with_retry(func, ip):
 def start_test(name, ip):
     ret = [name, ip]
     for func in funcs:
+        # print(func, ip)
         ret.append(test_with_retry(func, ip))
+        # print(ret[-1])
         sleep(TIMEOUT)
     return ret
     # return [name, ip, *[test_with_retry(func, ip) for func in funcs]]
@@ -108,7 +111,7 @@ for i in range(TOTAL_RETRIES):
                 result = pool.apply_async(start_test, (name,ip,))
                 ret = None
                 try:
-                    ret = result.get(timeout=180)
+                    ret = result.get(timeout=1200)
                 except:
                     if name in nqueue:
                         nqueue[name].append(ip)

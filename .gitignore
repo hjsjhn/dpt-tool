@@ -2,3 +2,4 @@
 dpt-tool/*/__pycache__/
 dpt-tool/__pycache__/
 dpt-tool/*.csv
+dpt-tool/failed.json

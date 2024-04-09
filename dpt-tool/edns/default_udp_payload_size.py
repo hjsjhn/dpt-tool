@@ -34,10 +34,10 @@ def check_dns_udp_payload_size(stub_server: str, domain: str = 'checkmydns.club'
     MAX_TRIES = 3
     for i in range(MAX_TRIES):
         query_stub.use_edns(payload=4096)
-        response_stub.append(int(dns.query.udp(query_stub, stub_server).payload))
+        response_stub.append(int(dns.query.udp(query_stub, stub_server, timeout=2).payload))
 
         query_stub.use_edns()
-        response_stub.append(int(dns.query.udp(query_stub, stub_server).payload))
+        response_stub.append(int(dns.query.udp(query_stub, stub_server, timeout=2).payload))
 
         sleep(1)
 
