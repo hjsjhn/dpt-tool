@@ -17,11 +17,11 @@ def check_dns_opt_record_once(server: str, domain: str = "checkmydns.club") -> b
     Examples:
         `check_dns_opt_record('1.1.1.1', 'checkmydns.club')`
     """
-    response = pydig(["@" + server, "+edns", ])
+    response = pydig(["@" + server, "+edns"])
     try:
         ercode = response.section['ADDITIONAL'].optrr.ercode
-        return ercode != 0
-    except:
+        return (0 in ercode)
+    except Exception as e:
         return False
     
 def check_dns_opt_record(server: str, domain: str = "checkmydns.club") -> bool:
@@ -43,9 +43,15 @@ def check_dns_opt_record(server: str, domain: str = "checkmydns.club") -> bool:
     las = None
     ret = None
     for _ in range(MAX_TRIES):
-        ret = "Yes" if check_dns_opt_record_once(server, domain) else "No"
+        try:
+            tmp = check_dns_opt_record_once(server, domain)
+        except:
+            continue
+        ret = "Yes" if tmp else "No"
         if las is not None and las != ret:
             return "Partial"
         las = ret
         time.sleep(1)
+    if ret == None:
+        raise Exception("Failed to get result")
     return ret
