@@ -4,6 +4,7 @@ import pandas as pd
 import json
 from tqdm import tqdm
 from time import sleep
+from datetime import datetime
 from constant import default_choice, default_server, choice_to_func, choice_to_name, RETRIES, TOTAL_RETRIES, TIMEOUT
 
 def str_to_dict_list(input_str):
@@ -45,7 +46,10 @@ The DNS servers to test
 Input must be in JSON format and contains a dictionary of server name to the ip list of that server.
 Example: -s '{"Cloudflare": ["1.1.1.1", "1.0.0.1"], "Google Public DNS": ["8.8.8.8"]}'
 """)
-parser.add_argument('-o', '--output', type=str, help="The output file path")
+parser.add_argument('-o', '--output', type=str, help="""
+The output file path
+Default output will be saved to ./dpt_[timestamp].csv
+""")
 
 args = parser.parse_args()
 if args.choice == None:
@@ -53,7 +57,7 @@ if args.choice == None:
 if len(args.choice) == 1 and ',' in args.choice[0]:
     args.choice = args.choice[0].split(',')
 if args.output == None:
-    args.output = "./result.csv"
+    args.output = f"./dpt_{int(datetime.today().strftime('%Y%m%d'))}.csv"
 # print(args.choice)
 # print(args.server)
 
@@ -70,6 +74,8 @@ if args.server is None:
     args.server = default_server
 else:
     args.server = args.server[0]
+
+start_time = datetime.now()
 
 df = pd.DataFrame(columns=["Name", "Address"] + args.choice)
 # apply the function to each server and each choice, output the result to the dataframe
@@ -145,3 +151,5 @@ if queue:
 
 # print(df)
 df.to_csv(args.output, index=False)
+print(f"Output saved to {args.output}")
+print(f"Time elapsed: {datetime.now() - start_time}")

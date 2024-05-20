@@ -80,8 +80,9 @@ def get_ede_support_list(server: str) -> list:
         `server`: the DNS server to query
     """
     res = []
-    # take 10 subdomains randomly to query
-    new_subdomain_list = np.random.choice(subdomain_list, 10, replace=False)
+    # take 10 subdomains randomly to query if using the whole list is too slow
+    # new_subdomain_list = np.random.choice(subdomain_list, 10, replace=False)
+    new_subdomain_list = subdomain_list
     for subdomain in new_subdomain_list:
         threshold = 3
         while threshold > 0:
