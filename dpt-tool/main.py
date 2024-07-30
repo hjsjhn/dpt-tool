@@ -40,6 +40,8 @@ Supported options:
     doh: DNS-over-HTTPS (RFC 8484)
     0x20: 0x20 encoding
     ede: EDNS Extended Errors (EDE)
+    http_fp: HTTP Fingerprint
+    system_fp: System Fingerprint
 """)
 parser.add_argument('-s', '--server', nargs='+', type=str_to_dict_list, help="""
 The DNS servers to test

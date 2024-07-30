@@ -68,7 +68,9 @@ choice_to_func = {
     "dot": get_dot_info,
     "doh": get_doh_info,
     "0x20": check_0x20_encoding,
-    "ede": get_ede_support_category
+    "ede": get_ede_support_category,
+    "http_fp": get_http_fingerprint,
+    "system_fp": get_system_fingerprint
 }
 choice_to_name = {
     "opt_record": "Support OPT Record (RFC 6891)",
@@ -83,6 +85,8 @@ choice_to_name = {
     "dot": "DNS-over-TLS (RFC 7858)",
     "doh": "DNS-over-HTTPS (RFC 8484)",
     "0x20": "0x20 encoding",
-    "ede": "EDNS Extended Errors (EDE)"
+    "ede": "EDNS Extended Errors (EDE)",
+    "http_fp": "HTTP Fingerprint",
+    "system_fp": "System Fingerprint"
 }
 default_choice = list(choice_to_func.keys())
