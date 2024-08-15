@@ -18,7 +18,7 @@ def check_port_randomization(server):
         `server`: the DNS server to query
 
     Returns:
-        `True` if the server supports 0x20 encoding, `False` otherwise
+        `True` if the server supports port randomization, `False` otherwise
 
     Examples:
         `check_port_randomization("8.8.8.8")`

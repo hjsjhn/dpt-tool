@@ -74,7 +74,8 @@ choice_to_func = {
     "system_fp": get_system_fingerprint,
     "main_auth": get_main_auth,
     "backup_auth": get_backup_auth,
-    "port_rand": check_port_randomization
+    "port_rand": check_port_randomization,
+    "ipv6_support": check_ipv6_support
 }
 choice_to_name = {
     "opt_record": "Support OPT Record (RFC 6891)",
@@ -94,6 +95,7 @@ choice_to_name = {
     "system_fp": "System Fingerprint",
     "main_auth": "Main authoritative nameserver",
     "backup_auth": "Backup authoritative nameserver",
-    "port_rand": "Port randomization"
+    "port_rand": "Port randomization",
+    "ipv6_support": "IPv6 support"
 }
 default_choice = list(choice_to_func.keys())
