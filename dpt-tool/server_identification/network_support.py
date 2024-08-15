@@ -1,6 +1,5 @@
 import sys
 sys.path.append('..')
-import utils.network_interfaces as network_interfaces
 from utils import pydig, edns_opt_dict
 from time import sleep
 import numpy as np

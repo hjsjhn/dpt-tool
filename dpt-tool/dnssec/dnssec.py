@@ -1,7 +1,6 @@
 import sys
 sys.path.append('..')
 from time import sleep
-import utils.network_interfaces as network_interfaces
 from utils import pydig, edns_opt_dict, dnskey_algo_dict
 
 def check_do_bit(server):

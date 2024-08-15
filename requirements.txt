@@ -1,2 +1,5 @@
 tqdm
 pandas
+numpy
+requests
+dnspython

@@ -1,7 +1,6 @@
 import sys
 sys.path.append('..')
 import numpy as np
-import utils.network_interfaces as network_interfaces
 from utils import pydig, edns_opt_dict
 
 domain = "extended-dns-errors.com"

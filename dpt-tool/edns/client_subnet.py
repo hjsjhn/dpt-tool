@@ -1,7 +1,6 @@
 import dns
 import sys
 sys.path.append('..')
-import utils.network_interfaces as network_interfaces
 from utils import pydig, edns_opt_dict
 
 def check_ecs(server: str) -> bool:
