@@ -1,1 +1,2 @@
 from .bit_0x20 import check_0x20_encoding
+from .port_rand import check_port_randomization

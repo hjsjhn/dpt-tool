@@ -73,7 +73,8 @@ choice_to_func = {
     "http_fp": get_http_fingerprint,
     "system_fp": get_system_fingerprint,
     "main_auth": get_main_auth,
-    "backup_auth": get_backup_auth
+    "backup_auth": get_backup_auth,
+    "port_rand": check_port_randomization
 }
 choice_to_name = {
     "opt_record": "Support OPT Record (RFC 6891)",
@@ -90,6 +91,9 @@ choice_to_name = {
     "0x20": "0x20 encoding",
     "ede": "EDNS Extended Errors (EDE)",
     "http_fp": "HTTP Fingerprint",
-    "system_fp": "System Fingerprint"
+    "system_fp": "System Fingerprint",
+    "main_auth": "Main authoritative nameserver",
+    "backup_auth": "Backup authoritative nameserver",
+    "port_rand": "Port randomization"
 }
 default_choice = list(choice_to_func.keys())

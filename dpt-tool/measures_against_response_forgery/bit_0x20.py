@@ -1,4 +1,3 @@
-import uuid
 import sys
 sys.path.append('..')
 import utils.network_interfaces as network_interfaces
