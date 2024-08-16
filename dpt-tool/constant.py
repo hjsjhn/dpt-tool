@@ -25,6 +25,7 @@ from extended_errors import *
 from measures_against_response_forgery import *
 from server_identification import *
 from authoritative_nameserver import *
+from extended_infrastructure import *
 
 RETRIES = 3        # how many times to try for a single test
 TOTAL_RETRIES = 3  # how many times to try for the entire test queue
@@ -75,7 +76,8 @@ choice_to_func = {
     "main_auth": get_main_auth,
     "backup_auth": get_backup_auth,
     "port_rand": check_port_randomization,
-    "ipv6_support": check_ipv6_support
+    "ipv6_support": check_ipv6_support,
+    "anycast": check_anycast
 }
 choice_to_name = {
     "opt_record": "Support OPT Record (RFC 6891)",
