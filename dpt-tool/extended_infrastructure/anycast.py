@@ -2,7 +2,14 @@ from scapy.all import *
 import time
 import json
 import requests
-import geoip2.database
+
+import ipaddress
+
+def are_ips_in_same_subnet(ip1, ip2):
+    netmask = 24
+    network1 = ipaddress.ip_network(f'{ip1}/{netmask}', strict=False)
+    network2 = ipaddress.ip_network(f'{ip2}/{netmask}', strict=False)
+    return network1.network_address == network2.network_address
 
 DEFAULT_MAX_HOPS = 32
 
@@ -43,23 +50,7 @@ def check_trace(trace_local, trace_remote):
                 remote_last_node = trace_remote["trace"][i][0]["ip"]
                 break
     # print(local_last_node, remote_last_node)
-    # use geoip to get the country of the ip
-    current_dir = os.path.dirname(os.path.abspath(__file__))
-    try:
-        reader = geoip2.database.Reader('/'.join([current_dir, "GeoLite2-Country.mmdb"]))
-    except Exception as e:
-        print(e)
-    try:
-        local_country = reader.country(local_last_node).country.name
-    except:
-        local_country = "Unknown1"
-    try:
-        remote_country = reader.country(remote_last_node).country.name
-    except:
-        remote_country = "Unknown2"
-    reader.close()
-    # print(local_country, remote_country)
-    return local_country != remote_country
+    return not are_ips_in_same_subnet(local_last_node, remote_last_node)
 
 def check_anycast(server, qname = "baidu.com"):
     """
