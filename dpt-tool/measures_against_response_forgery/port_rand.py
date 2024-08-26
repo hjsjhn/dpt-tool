@@ -27,12 +27,17 @@ def check_port_randomization(server):
     cnt = REPEAT
     while cnt:
         cnt -= 1
-        response = pydig(["@" + server, "a.rdns.dnsmeasurement.com", "TXT"])
+        try:
+            response = pydig(["@" + server, "a.rdns.dnsmeasurement.com", "TXT"])
+        except:
+            continue
         if response.rcode == 0:
             for answer in response.section['ANSWER'].record:
                 if answer.rrtype == "TXT":
-                    ports.append(int(answer.rdata.split("##")[0].split("#")[-1]))
+                    ports.append(int(answer.rdata.split("#")[2]))
 
+    if len(ports) < REPEAT//2:
+        return False
     port_min = min(ports)
     port_max = max(ports)
     port_range = port_max - port_min
