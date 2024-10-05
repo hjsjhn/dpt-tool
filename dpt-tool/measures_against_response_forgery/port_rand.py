@@ -7,6 +7,9 @@ import requests
 
 REPEAT = 100
 
+COVERAGE_RATE_THRESHOLD = 0.3
+STD_DEVIATION_THRESHOLD = 3000
+
 def check_port_randomization(server):
     """
     This function checks if the recursive DNS server randomizes the source port of the query sent to the authoritative server
@@ -46,10 +49,10 @@ def check_port_randomization(server):
 
     total_port_range = 65535 - 1024 + 1
     coverage_rate = port_range / total_port_range
-    # print(f"端口最小值: {port_min}")
-    # print(f"端口最大值: {port_max}")
-    # print(f"端口范围: {port_range}")
-    # print(f"标准差: {std_deviation:.2f}")
-    # print(f"覆盖率: {coverage_rate:.2%}")
-    # print(ports)
-    return True if coverage_rate >= 0.5 and std_deviation >= 10000 else False
+    print(f"端口最小值: {port_min}")
+    print(f"端口最大值: {port_max}")
+    print(f"端口范围: {port_range}")
+    print(f"标准差: {std_deviation:.2f}")
+    print(f"覆盖率: {coverage_rate:.2%}")
+    print(ports)
+    return True if coverage_rate >= COVERAGE_RATE_THRESHOLD and std_deviation >= STD_DEVIATION_THRESHOLD else False
