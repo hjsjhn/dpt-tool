@@ -1,6 +1,6 @@
 [submodule "dpt-tool/utils/pydig4dpt"]
 	path = dpt-tool/utils/pydig4dpt
-	url = https://github.com/hjshn/pydig4dpt.git
+	url = https://github.com/hjsjhn/pydig4dpt.git
 [submodule "dpt-tool/utils/dnssoftver4dpt"]
 	path = dpt-tool/utils/dnssoftver4dpt
 	url = https://github.com/hjsjhn/dnssoftver4dpt.git
