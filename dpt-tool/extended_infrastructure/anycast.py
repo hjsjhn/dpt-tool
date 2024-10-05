@@ -82,9 +82,11 @@ def check_anycast(server, qname = "baidu.com"):
     try:
         response = requests.get(url, params=params, timeout=60)
     except requests.exceptions.Timeout:
-        return "Remote traceroute takes too long"
+        print("[ERR] Remote traceroute takes too long")
+        return False
     except:
-        return "Remote traceroute request failed"
+        print("[ERR]Remote traceroute request failed")
+        return False
 
     if response.status_code == 200:
         try:
