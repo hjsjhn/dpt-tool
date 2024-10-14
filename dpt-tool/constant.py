@@ -68,7 +68,7 @@ choice_to_func = {
     "response_validation": check_response_validation,
     "dnskey_algorithm": get_dnskey_alg,
     "dot": get_dot_info,
-    "doh": get_doh_info,
+    "doh": get_doh_supported,
     "0x20": check_0x20_encoding,
     "ede": get_ede_support_category,
     "http_fp": get_http_fingerprint,

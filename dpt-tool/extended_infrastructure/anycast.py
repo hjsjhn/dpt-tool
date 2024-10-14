@@ -66,7 +66,7 @@ def check_anycast(server, qname = "baidu.com"):
         `check_anycast("8.8.8.8")`
     """
     # print(server)
-    url = "http://47.251.4.152"
+    url = "http://60.205.184.92"
     params = {
         'dest': server,
         'qname': qname,
@@ -80,7 +80,7 @@ def check_anycast(server, qname = "baidu.com"):
     # print(trace_local)
 
     try:
-        response = requests.get(url, params=params, timeout=60)
+        response = requests.get(url, params=params, timeout=120)
     except requests.exceptions.Timeout:
         print("[ERR] Remote traceroute takes too long")
         return False
