@@ -67,8 +67,8 @@ def get_doh_info(server, query_domain = 'checkmydns.club'):
 def get_doh_supported(server):
     doh_urls = get_doh_info(server)
     if doh_urls:
-        return True
+        return str(doh_urls)
     else:
-        return False
+        return "no"
 
 # print(get_doh_info("77.88.8.8", "www.baidu.com"))
